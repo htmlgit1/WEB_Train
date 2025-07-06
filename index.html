@@ -6,37 +6,75 @@
     <title>THE GOLDEN AXIS - 대한민국 부의 지도가 바뀌는 곳</title>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <style>
-        :root { --neon-gold: #FFD700; --bg-color: #000000; --text-color: #EAEAEA; --text-sub-color: #a0a0a0; }
+        :root {
+            --neon-gold: #FFD700;
+            --deep-gold: #B8860B;
+            --bg-color: #FFFFFF;
+            --body-bg-color: #F8F9FA;
+            --text-color: #212529;
+            --text-sub-color: #6c757d;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #1a1a1a; font-family: 'Pretendard', sans-serif; color: var(--text-color); display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        #wrapper { width: 100%; max-width: 1920px; aspect-ratio: 16 / 9; position: relative; background-color: var(--bg-color); box-shadow: 0 0 40px rgba(0, 0, 0, 0.7); }
+        body { background-color: var(--body-bg-color); font-family: 'Pretendard', sans-serif; color: var(--text-color); display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        #wrapper { width: 100%; max-width: 1920px; aspect-ratio: 16 / 9; position: relative; background-color: var(--bg-color); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); }
         #presentation-container { width: 100%; height: 100%; position: relative; overflow: hidden; }
         .page { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 5%; opacity: 0; transform: scale(0.98); transition: transform 0.7s ease-in-out, opacity 0.7s ease-in-out; pointer-events: none; }
         .page.active { opacity: 1; transform: scale(1); pointer-events: all; }
         .page.prev { opacity: 0; transform: scale(1.02); pointer-events: none; }
-        h1 { font-size: 6rem; font-weight: 800; }
-        h2 { font-size: 3.5rem; font-weight: 700; margin-bottom: 2rem; line-height: 1.3; }
-        .subtitle { font-size: 1.5rem; font-weight: 400; max-width: 900px; line-height: 1.6; color: var(--text-sub-color); }
-        .keyword { color: var(--neon-gold); font-weight: 700; text-shadow: 0 0 8px var(--neon-gold); }
-        @keyframes pulse { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.01); filter: brightness(1.1); } }
-        .pulse { animation: pulse 4s infinite ease-in-out; }
-        .interactive-btn { background-color: transparent; border: 2px solid var(--neon-gold); color: var(--neon-gold); padding: 1rem 2rem; font-size: 1.2rem; font-weight: 600; cursor: pointer; margin-top: 3rem; transition: all 0.3s ease; }
-        .interactive-btn:hover { background-color: var(--neon-gold); color: var(--bg-color); transform: scale(1.05); box-shadow: 0 0 20px var(--neon-gold); }
+
+        h1 { font-size: 6rem; font-weight: 800; letter-spacing: -0.02em; word-break: keep-all; }
+        h2 { font-size: 3.5rem; font-weight: 700; margin-bottom: 2rem; line-height: 1.4; letter-spacing: -0.02em; word-break: keep-all; }
+        .subtitle { font-size: 1.5rem; font-weight: 400; max-width: 900px; line-height: 1.7; color: var(--text-sub-color); word-break: keep-all; }
+
+        .keyword { color: var(--deep-gold); font-weight: 700; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.01); opacity: 0.85; } }
+        .pulse { color: var(--deep-gold); animation: pulse 4s infinite ease-in-out; }
+
+        .interactive-btn { background-color: transparent; border: 2px solid var(--deep-gold); color: var(--deep-gold); padding: 1rem 2rem; font-size: 1.2rem; font-weight: 600; cursor: pointer; margin-top: 3rem; transition: all 0.3s ease; }
+        .interactive-btn:hover { background-color: var(--deep-gold); color: white; transform: scale(1.05); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+
         #controls { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 100; display: flex; gap: 1rem; }
-        .nav-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; transition: all 0.3s; }
-        .nav-btn:hover { background: var(--neon-gold); border-color: var(--neon-gold); }
+        .nav-btn { background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); color: var(--text-color); width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; transition: all 0.3s; }
+        .nav-btn:hover { background: var(--deep-gold); border-color: var(--deep-gold); color: white; }
+
         #fullscreen-btn { position: absolute; top: 30px; right: 30px; background: none; border: none; cursor: pointer; z-index: 100; }
-        #fullscreen-btn svg { width: 24px; height: 24px; fill: rgba(255,255,255,0.5); transition: all 0.3s; }
-        #fullscreen-btn:hover svg { fill: white; transform: scale(1.1); }
+        #fullscreen-btn svg { width: 24px; height: 24px; fill: rgba(0,0,0,0.4); transition: all 0.3s; }
+        #fullscreen-btn:hover svg { fill: var(--text-color); transform: scale(1.1); }
+
         .content-box { display: flex; justify-content: space-around; align-items: center; width: 90%; margin-top: 3rem; gap: 4rem; }
         .text-area { text-align: left; max-width: 45%; }
         .visual-area { max-width: 50%; flex-shrink: 0; }
-        .visual-area img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2); }
+        .visual-area img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); }
         .icon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; width: 85%; margin-top: 3rem;}
-        .icon-item { text-align: center; }
-        .icon-item svg { width: 80px; height: 80px; color: var(--neon-gold); margin-bottom: 1.5rem; }
-        .icon-item h3 { font-size: 1.3rem; color: var(--neon-gold); margin-bottom: 0.5rem;}
-        .icon-item p { font-size: 1rem; color: var(--text-sub-color); line-height: 1.5; }
+        
+        .anim { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .page.active .anim { opacity: 1; transform: translateY(0); }
+        .page.active .anim.delay-1 { transition-delay: 0.2s; }
+        .page.active .anim.delay-2 { transition-delay: 0.4s; }
+        .page.active .content-box.anim, .page.active .icon-grid.anim { transition-delay: 0.2s; }
+        
+        .icon-item {
+            position: relative; background-color: var(--bg-color); border: 1px solid #dee2e6; color: inherit; font-family: inherit; padding: 2rem;
+            cursor: pointer; text-align: center; border-radius: 10px; transition: all 0.3s ease; overflow: hidden;
+        }
+        .icon-item svg { width: 60px; height: 60px; margin-bottom: 1rem; }
+        .icon-item h3 { font-size: 1.5rem; color: var(--deep-gold); margin-bottom: 0.75rem; }
+        .icon-item p { font-size: 1.1rem; color: var(--text-sub-color); line-height: 1.5; }
+        
+        .icon-item:not(.revealed):hover { border-color: var(--deep-gold); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07); transform: translateY(-5px); }
+        .icon-item .icon-text { opacity: 0.6; transform: translateY(10px); transition: opacity 0.5s ease-out 0.3s, transform 0.5s ease-out 0.3s; }
+        .icon-item .drawable { stroke-width: 1.5; transition: stroke-dashoffset 1.2s cubic-bezier(0.45, 0, 0.55, 1), stroke 0.5s; stroke: #adb5bd; }
+        .icon-item::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--neon-gold); opacity: 0; transform: scale(0.8); pointer-events: none; }
+        .icon-item.revealed { cursor: default; border-color: #ffeca7; }
+        .icon-item.revealed::after { animation: bright-flash 0.6s ease-out; }
+        .icon-item.revealed .icon-text { opacity: 1; transform: translateY(0); }
+        .icon-item.revealed .drawable { stroke-dashoffset: 0 !important; stroke: var(--deep-gold); }
+        @keyframes bright-flash {
+            0% { transform: scale(0.8); opacity: 0; }
+            30% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -44,37 +82,40 @@
 <div id="wrapper">
     <main id="presentation-container">
         
-        <!-- INTRO -->
-        <section class="page active"><h1>THE GOLDEN AXIS</h1><p class="subtitle pulse">대한민국 부의 지도가 바뀌는 곳, 서해안 골든라인에 투자하라</p><button class="interactive-btn">성공 투자 전략 확인하기</button></section>
-        <section class="page"><h2>자산 시장의 안갯속,<br>당신의 자본은 어디로 가야 합니까?</h2><p class="subtitle">주식, 코인, 아파트... 끊임없이 변하는 시장 속에서<br>10년, 20년 뒤에도 <span class="keyword">흔들리지 않을 자산</span>은 무엇일까요?</p></section>
-        <section class="page"><h2>정답은 단 하나, <span class="keyword">땅</span>입니다.</h2><p class="subtitle">모든 가치는 땅에서 시작됩니다.<br>아파트도, 공장도, 도로도 결국 땅 위에 세워집니다.<br>우리는 건물이 아닌, <span class="keyword">미래 가치의 원천</span>에 투자해야 합니다.</p></section>
-
-        <!-- MACRO TREND -->
-        <section class="page"><h2>그렇다면, 대한민국에서<br>가장 뜨거운 땅은 어디일까요?</h2><p class="subtitle">성공 투자의 첫걸음은 <span class="keyword">국가 발전의 큰 흐름</span>을 읽는 것입니다.<br>수도권 1극 체제를 넘어, 새로운 성장축이 떠오르고 있습니다.</p></section>
+        <section class="page active"><h1 class="anim">THE GOLDEN AXIS</h1><p class="subtitle pulse anim delay-1">대한민국 부의 지도가 바뀌는 곳, 서해안 골든라인에 투자하라</p><button class="interactive-btn anim delay-2">성공 투자 전략 확인하기</button></section>
+        <section class="page"><h2 class="anim">자산 시장의 안갯속,<br>당신의 자본은 어디로 가야 합니까?</h2><p class="subtitle anim delay-1">주식, 코인, 아파트... 끊임없이 변하는 시장 속에서<br>10년, 20년 뒤에도 <span class="keyword">흔들리지 않을 자산</span>은 무엇일까요?</p></section>
+        <section class="page"><h2 class="anim">정답은 단 하나, <span class="keyword">땅</span>입니다.</h2><p class="subtitle anim delay-1">모든 가치는 땅에서 시작됩니다.<br>아파트도, 공장도, 도로도 결국 땅 위에 세워집니다.<br>우리는 건물이 아닌, <span class="keyword">미래 가치의 원천</span>에 투자해야 합니다.</p></section>
+        <section class="page"><h2 class="anim">그렇다면, 대한민국에서<br>가장 뜨거운 땅은 어디일까요?</h2><p class="subtitle anim delay-1">성공 투자의 첫걸음은 <span class="keyword">국가 발전의 큰 흐름</span>을 읽는 것입니다.<br>수도권 1극 체제를 넘어, 새로운 성장축이 떠오르고 있습니다.</p></section>
         <section class="page">
-            <div class="content-box">
+            <div class="content-box anim">
                 <div class="text-area">
                     <h2>대한민국 성장 동력의 새로운 중심,<br><span class="keyword">서해안 개발축</span></h2>
                     <p class="subtitle" style="text-align: left;">수도권의 산업과 인구를 남쪽으로 연결하고, 중국을 마주한<br>글로벌 전초기지. 국가의 모든 인프라와 자본이 이곳으로<br>집중되고 있습니다.</p>
                 </div>
-                <!-- ★★★★★ 수정된 부분: 로컬 이미지 경로 ★★★★★ -->
                 <div class="visual-area"><img src="images/map-main.jpg" alt="서해안 개발축 지도"></div>
             </div>
         </section>
         <section class="page">
-            <h2>왜 <span class="keyword">서해안 개발축</span>인가?</h2>
-            <div class="icon-grid">
-                <div class="icon-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><h3>대한민국 최대 산업벨트</h3><p>반도체, 자동차, 철강, 바이오<br>미래 산업의 심장부</p></div>
-                <div class="icon-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M12 2a10 10 0 1 1-10 10A10 10 0 0 1 12 2z"/></svg><h3>글로벌 물류 허브</h3><p>평택·당진항을 통한<br>대중국 및 글로벌 교역의 관문</p></div>
-                <div class="icon-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><h3>압도적인 인프라 투자</h3><p>GTX, 서해선 복선전철, 고속도로 등<br>사통팔달 교통망 확충</p></div>
+            <h2 class="anim">왜 <span class="keyword">서해안 개발축</span>인가?</h2>
+            <div class="icon-grid anim delay-1">
+                <!-- ★★★★★ 변경된 아이콘 ★★★★★ -->
+                <button type="button" class="icon-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path class="drawable" d="M2 20h20M4 18v-8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8"/><path class="drawable" d="M16 10V6l-4-2-4 2v4"/><path class="drawable" d="M12 18v-4"/></svg>
+                    <div class="icon-text"><h3>최대 산업벨트</h3><p>반도체, 자동차, 철강, 바이오 등<br>미래 산업의 심장부</p></div>
+                </button>
+                <button type="button" class="icon-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path class="drawable" d="M2 18.5h15"/><path class="drawable" d="M22 18.5H17"/><path class="drawable" d="M20 18.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2"/><path class="drawable" d="M12 7.5H8"/><path class="drawable" d="M16 7.5h-1"/></svg>
+                    <div class="icon-text"><h3>글로벌 물류 허브</h3><p>평택·당진항을 통한<br>대중국 및 글로벌 교역 관문</p></div>
+                </button>
+                <button type="button" class="icon-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path class="drawable" d="M3 13.5c3.6 3.6 9.4 3.6 13 0"/><path class="drawable" d="M8 18.5c3.6-3.6 9.4-3.6 13 0"/><path class="drawable" d="M3 8.5c3.6-3.6 9.4-3.6 13 0"/><path class="drawable" d="M8 3.5c3.6 3.6 9.4 3.6 13 0"/></svg>
+                    <div class="icon-text"><h3>압도적 인프라 투자</h3><p>GTX, 서해선 복선전철 등<br>사통팔달 교통망 확충</p></div>
+                </button>
             </div>
         </section>
-        
-        <!-- HWASEONG -->
-        <section class="page"><h2>서해안 축의 제 1관문,<br><span class="keyword">화성시 (Hwaseong)</span></h2><p class="subtitle">서울과 가장 가까운 미래. 자본과 기술, 인재가<br>폭발적으로 모여드는 기회의 도시입니다.</p></section>
+        <section class="page"><h2 class="anim">서해안 축의 제 1관문,<br><span class="keyword">화성시 (Hwaseong)</span></h2><p class="subtitle anim delay-1">서울과 가장 가까운 미래. 자본과 기술, 인재가<br>폭발적으로 모여드는 기회의 도시입니다.</p></section>
         <section class="page">
-            <div class="content-box">
-                <!-- ★★★★★ 수정된 부분: 로컬 이미지 경로 ★★★★★ -->
+            <div class="content-box anim">
                 <div class="visual-area"><img src="images/hwaseong.jpg" alt="화성시 반도체 공장"></div>
                 <div class="text-area" style="text-align:right;">
                     <h2>화성 투자의 <span class="keyword">필승 공식 3</span></h2>
@@ -84,31 +125,25 @@
                 </div>
             </div>
         </section>
-        <section class="page"><h2>화성시, 숫자가 증명하는 성장</h2><p class="subtitle">인구 100만 돌파, 전국 지자체 GRDP 1위.<br>화성의 성장은 현재진행형입니다. 이미 오른 곳이 아닌,<br><span class="keyword">앞으로 오를 땅</span>을 찾아야 합니다.</p></section>
-        <section class="page"><h2>Focus on Hwaseong Land</h2><p class="subtitle">송산그린시티 주변, 향남제약단지 인근, 비봉·매송 지구 등<br><span class="keyword">대규모 개발 압력</span>이 확산되는 지역의 농지, 임야가<br>미래의 황금알을 낳는 거위입니다.</p></section>
-        
-        <!-- PYEONGTAEK -->
-        <section class="page"><h2>글로벌 코리아의 심장,<br><span class="keyword">평택시 (Pyeongtaek)</span></h2><p class="subtitle">항만, 산업, 사람이 만나 대한민국 경제의<br>엔진 역할을 하는 도시입니다.</p></section>
+        <section class="page"><h2 class="anim">화성시, 숫자가 증명하는 성장</h2><p class="subtitle anim delay-1">인구 100만 돌파, 전국 지자체 GRDP 1위.<br>화성의 성장은 현재진행형입니다. 이미 오른 곳이 아닌,<br><span class="keyword">앞으로 오를 땅</span>을 찾아야 합니다.</p></section>
+        <section class="page"><h2 class="anim">Focus on Hwaseong Land</h2><p class="subtitle anim delay-1">송산그린시티 주변, 향남제약단지 인근, 비봉·매송 지구 등<br><span class="keyword">대규모 개발 압력</span>이 확산되는 지역의 농지, 임야가<br>미래의 황금알을 낳는 거위입니다.</p></section>
+        <section class="page"><h2 class="anim">글로벌 코리아의 심장,<br><span class="keyword">평택시 (Pyeongtaek)</span></h2><p class="subtitle anim delay-1">항만, 산업, 사람이 만나 대한민국 경제의<br>엔진 역할을 하는 도시입니다.</p></section>
         <section class="page">
-             <div class="content-box">
+             <div class="content-box anim">
                  <div class="text-area">
                     <h2>평택을 움직이는 <span class="keyword">거대한 삼각편대</span></h2>
                     <p class="subtitle" style="text-align: left;"><span class="keyword">1. 삼성전자 평택캠퍼스</span><br>세계 최대 규모의 반도체 생산기지. 투자는 계속됩니다.</p>
                     <p class="subtitle" style="text-align: left;"><span class="keyword">2. 평택항 (Port of Pyeongtaek)</span><br>자동차 수출입 1위, 물동량 급증. 확장만이 남았습니다.</p>
                     <p class="subtitle" style="text-align: left;"><span class="keyword">3. 고덕국제신도시 & 미군기지</span><br>글로벌 인재와 소비력이 집중되는 국제 도시.</p>
                  </div>
-                 <!-- ★★★★★ 수정된 부분: 로컬 이미지 경로 ★★★★★ -->
                  <div class="visual-area"><img src="images/pyeongtaek.jpg" alt="평택항 물류 허브"></div>
             </div>
         </section>
-        <section class="page"><h2>평택시, 투자의 스케일이 다르다</h2><p class="subtitle">삼성의 100조 투자, 평택항 확장, 브레인시티 개발...<br>모든 개발 계획의 끝은 <span class="keyword">토지 수요의 폭발적인 증가</span>입니다.</p></section>
-        <section class="page"><h2>Focus on Pyeongtaek Land</h2><p class="subtitle">평택항 배후단지, K-반도체 벨트 인근(진위, 서탄),<br>안중역세권 개발지 등 <span class="keyword">산업과 물류의 길목</span>에 있는 땅이<br>미래 부의 고속도로입니다.</p></section>
-
-        <!-- DANGJIN -->
-        <section class="page"><h2>서해안 시대의 숨겨진 보석,<br><span class="keyword">당진시 (Dangjin)</span></h2><p class="subtitle">아직 저평가된, 그래서 더 큰 기회가 있는<br>가치투자의 최적지입니다.</p></section>
+        <section class="page"><h2 class="anim">평택시, 투자의 스케일이 다르다</h2><p class="subtitle anim delay-1">삼성의 100조 투자, 평택항 확장, 브레인시티 개발...<br>모든 개발 계획의 끝은 <span class="keyword">토지 수요의 폭발적인 증가</span>입니다.</p></section>
+        <section class="page"><h2 class="anim">Focus on Pyeongtaek Land</h2><p class="subtitle anim delay-1">평택항 배후단지, K-반도체 벨트 인근(진위, 서탄),<br>안중역세권 개발지 등 <span class="keyword">산업과 물류의 길목</span>에 있는 땅이<br>미래 부의 고속도로입니다.</p></section>
+        <section class="page"><h2 class="anim">서해안 시대의 숨겨진 보석,<br><span class="keyword">당진시 (Dangjin)</span></h2><p class="subtitle anim delay-1">아직 저평가된, 그래서 더 큰 기회가 있는<br>가치투자의 최적지입니다.</p></section>
         <section class="page">
-            <div class="content-box">
-                 <!-- ★★★★★ 수정된 부분: 로컬 이미지 경로 ★★★★★ -->
+            <div class="content-box anim">
                  <div class="visual-area"><img src="images/dangjin.jpg" alt="당진시 제철소"></div>
                 <div class="text-area" style="text-align:right;">
                     <h2>당진의 미래를 이끌 <span class="keyword">성장 엔진</span></h2>
@@ -118,37 +153,64 @@
                  </div>
             </div>
         </section>
-        <section class="page"><h2>당진시, 지금이 가장 쌀 때입니다.</h2><p class="subtitle">서해선 복선전철 개통, 석문산단 인입철도 건설 등<br>대규모 교통 인프라가 <span class="keyword">땅값 상승의 기폭제</span>가 될 것입니다.</p></section>
-        <section class="page"><h2>Focus on Dangjin Land</h2><p class="subtitle">합덕역세권 개발지, 석문국가산단 인근, 송산2일반산단 주변 등<br>아직 <span class="keyword">개발 초기 단계</span>에 있는 땅을 선점하는 것이<br>10배의 수익률을 만드는 지혜입니다.</p></section>
+        <section class="page"><h2 class="anim">당진시, 지금이 가장 쌀 때입니다.</h2><p class="subtitle anim delay-1">서해선 복선전철 개통, 석문산단 인입철도 건설 등<br>대규모 교통 인프라가 <span class="keyword">땅값 상승의 기폭제</span>가 될 것입니다.</p></section>
+        <section class="page"><h2 class="anim">Focus on Dangjin Land</h2><p class="subtitle anim delay-1">합덕역세권 개발지, 석문국가산단 인근, 송산2일반산단 주변 등<br>아직 <span class="keyword">개발 초기 단계</span>에 있는 땅을 선점하는 것이<br>10배의 수익률을 만드는 지혜입니다.</p></section>
+        <section class="page">
+            <h2 class="anim">화성, 평택, 당진<br>당신의 선택은?</h2>
+            <div class="icon-grid anim delay-1">
+                <!-- ★★★★★ 변경된 아이콘 ★★★★★ -->
+                <button type="button" class="icon-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path class="drawable" d="M5 11.25a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5zM12 11.25a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5zM19 11.25a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5z"/><path class="drawable" d="M5 12V2.25L12 6l7-3.75V12"/><path class="drawable" d="M12 21.75V6"/></svg>
+                    <div class="icon-text"><h3>화성시</h3><p><span class="keyword">#스피드 #고수익</span><br>공격적 투자자</p></div>
+                </button>
+                <button type="button" class="icon-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path class="drawable" d="M21 8.25v7.5a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-7.5a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3z"/><path class="drawable" d="M3 9h18"/><path class="drawable" d="M7 13v2"/></svg>
+                    <div class="icon-text"><h3>평택시</h3><p><span class="keyword">#스케일 #안정성</span><br>안정적 투자자</p></div>
+                </button>
+                <button type="button" class="icon-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path class="drawable" d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                    <div class="icon-text"><h3>당진시</h3><p><span class="keyword">#잠재력 #장기투자</span><br>현명한 투자자</p></div>
+                </button>
+            </div>
+        </section>
+        <section class="page"><h2 class="anim">정보는 넘쳐나지만,<br><span class="keyword">진짜 돈 되는 땅</span>은 따로 있습니다.</h2><p class="subtitle anim delay-1">개발 계획의 핵심에 있으면서도, 아직 가격이 오르지 않은 땅.<br>개인이 찾기 힘든 <span class="keyword">진주 같은 토지</span>를 저희가 찾아드립니다.</p></section>
         
-        <!-- CONCLUSION & CALL TO ACTION -->
+        <!-- '원스톱 프로세스' 페이지 복원 -->
         <section class="page">
-            <h2>화성, 평택, 당진<br>당신의 선택은?</h2>
-            <div class="icon-grid">
-                <div class="icon-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg><h3>화성시</h3><p><span class="keyword">#스피드 #최고입지 #고수익</span><br>빠른 성장을 원하는 공격적 투자자</p></div>
-                <div class="icon-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><h3>평택시</h3><p><span class="keyword">#스케일 #안정성 #지속성장</span><br>국가급 프로젝트에 올라탈 안정적 투자자</p></div>
-                <div class="icon-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><h3>당진시</h3><p><span class="keyword">#가치주 #잠재력 #장기투자</span><br>저평가된 보석을 발굴할 현명한 투자자</p></div>
+            <h2 class="anim">성공 투자를 위한 <span class="keyword">원스톱 프로세스</span></h2>
+            <div class="icon-grid anim delay-1">
+                <button type="button" class="icon-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path class="drawable" d="M20 9V5c0-1.1-.9-2-2-2H6C4.9 3 4 3.9 4 5v14c0 1.1.9 2 2 2h4"/><path class="drawable" d="M15 13c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5z"/><path class="drawable" d="m22 22-3-3"/></svg>
+                    <div class="icon-text"><h3>1. 정밀 분석 & 컨설팅</h3><p>최적의 토지 포트폴리오 제안</p></div>
+                </button>
+                <button type="button" class="icon-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path class="drawable" d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle class="drawable" cx="12" cy="10" r="3"/></svg>
+                    <div class="icon-text"><h3>2. 현장 답사 & 브리핑</h3><p>두 발로 직접 미래 가치 확인</p></div>
+                </button>
+                <button type="button" class="icon-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path class="drawable" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline class="drawable" points="14 2 14 8 20 8"/><polyline class="drawable" points="9 15 11 17 15 13"/></svg>
+                    <div class="icon-text"><h3>3. 안전한 계약 & 등기</h3><p>투명하고 안전한 절차 대행</p></div>
+                </button>
             </div>
         </section>
-        <section class="page"><h2>정보는 넘쳐나지만,<br><span class="keyword">진짜 돈 되는 땅</span>은 따로 있습니다.</h2><p class="subtitle">개발 계획의 핵심에 있으면서도, 아직 가격이 오르지 않은 땅.<br>개인이 찾기 힘든 <span class="keyword">진주 같은 토지</span>를 저희가 찾아드립니다.</p></section>
+        <section class="page"><h2 class="anim">투자에 대한 두려움,<br>저희가 <span class="keyword">확신</span>으로 바꿔드리겠습니다.</h2><p class="subtitle anim delay-1">토지 투자는 긴 호흡이 필요합니다. 하지만 올바른 방향만 안다면,<br>가장 확실하고 거대한 부를 가져다줄 유일한 방법입니다.</p></section>
+        
+        <!-- ★★★★★ 마지막 페이지 버튼 제거 ★★★★★ -->
         <section class="page">
-            <h2>성공 투자를 위한 <span class="keyword">원스톱 프로세스</span></h2>
-            <div class="icon-grid">
-                <div class="icon-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V5c0-1.1-.9-2-2-2H6C4.9 3 4 3.9 4 5v14c0 1.1.9 2 2 2h4"/><path d="M15 13c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5z"/><path d="m22 22-3-3"/></svg><h3>1. 정밀 분석 & 컨설팅</h3><p>고객의 투자 성향과 예산에 맞는<br>최적의 토지 포트폴리오 제안</p></div>
-                <div class="icon-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><h3>2. 현장 답사 & 브리핑</h3><p>지도 위 정보가 아닌, 두 발로 땅을 밟고<br>미래 가치를 직접 확인</p></div>
-                <div class="icon-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 15 11 17 15 13"/></svg><h3>3. 안전한 계약 & 등기</h3><p>복잡한 행정 및 법률 절차를<br>투명하고 안전하게 대행</p></div>
-            </div>
+            <h2 class="anim">이제, 당신의 차례입니다.</h2>
+            <p class="subtitle anim delay-1" style="font-size: 2rem; color: var(--text-color);">
+                <span class="keyword">성공적인 미래</span>를 위한 첫걸음,<br> 저희가 함께 하겠습니다.
+            </p>
         </section>
-        <section class="page"><h2>투자에 대한 두려움,<br>저희가 <span class="keyword">확신</span>으로 바꿔드리겠습니다.</h2><p class="subtitle">토지 투자는 긴 호흡이 필요합니다. 하지만 올바른 방향만 안다면,<br>가장 확실하고 거대한 부를 가져다줄 유일한 방법입니다.</p></section>
-        <section class="page"><h2>이제, 당신의 차례입니다.</h2><p class="subtitle">부의 지도가 바뀌는 역사적인 순간, 망설이면 기회는 사라집니다.<br>당신의 성공적인 미래를 위한 첫걸음, 지금 바로 시작하십시오.</p><button class="interactive-btn">1:1 투자 상담 신청하기</button></section>
 
     </main>
-    <nav id="controls"><button class="nav-btn" id="prev-btn">&lt;</button><button class="nav-btn" id="next-btn">&gt;</button></nav>
+    <nav id="controls"><button class="nav-btn" id="prev-btn"><</button><button class="nav-btn" id="next-btn">></button></nav>
     <button id="fullscreen-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 2h-2v3h-3v2h5v-5zm-3-2V5h-2v2h3v3z"/></svg></button>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // --- 스크립트는 수정할 필요 없습니다 ---
         const pages = document.querySelectorAll('.page');
         const nextBtn = document.getElementById('next-btn');
         const prevBtn = document.getElementById('prev-btn');
@@ -187,7 +249,26 @@
                 document.exitFullscreen();
             }
         });
+        
         updatePage();
+
+        const iconItems = document.querySelectorAll('.icon-item');
+        iconItems.forEach(item => {
+            const drawables = item.querySelectorAll('.drawable');
+            if (drawables.length > 0) {
+                 drawables.forEach(path => {
+                    const length = path.getTotalLength();
+                    path.style.strokeDasharray = length;
+                    path.style.strokeDashoffset = length;
+                });
+
+                item.addEventListener('click', function() {
+                    if (!this.classList.contains('revealed')) {
+                        this.classList.add('revealed');
+                    }
+                });
+            }
+        });
     });
 </script>
 
